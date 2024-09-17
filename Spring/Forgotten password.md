@@ -1,0 +1,1 @@
+[Great guide on how to set it up](https://www.codejava.net/frameworks/spring-boot/spring-security-forgot-password-tutorial)

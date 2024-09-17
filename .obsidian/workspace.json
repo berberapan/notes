@@ -1,0 +1,209 @@
+{
+  "main": {
+    "id": "b6be6312387fb11d",
+    "type": "split",
+    "children": [
+      {
+        "id": "cdd0327f3cd9c56a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "681fb0686dcfedb4",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Misc code/Postgres Docker.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "0d423d121870787e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "IT Sec/Linux.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "017e03036266f0ec",
+    "type": "split",
+    "children": [
+      {
+        "id": "3929cc88ed5e6a0b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6428f5bdae67cd01",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "aa71288a87ec0fbd",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "672bdd21bf1fe775",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 244.5
+  },
+  "right": {
+    "id": "05e39475f12815ec",
+    "type": "split",
+    "children": [
+      {
+        "id": "3cc50f02545773c7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8acafa1caf85795a",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "IT Sec/Linux.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "e0087469dc502a33",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "IT Sec/Linux.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "c78a355f7f496fc1",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "e7d4575c629d93e7",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "IT Sec/Linux.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "aa71288a87ec0fbd",
+  "lastOpenFiles": [
+    "attachments/Pasted image 20240913162550.png",
+    "Go/Let's Go Further! (book).md",
+    "IT Sec/Linux.md",
+    "Misc code/Postgres Docker.md",
+    "Misc code/Fzf.md",
+    "Misc code/Start React project with Vite.md",
+    "Spring/Controller.md",
+    "Spring/Annotations.md",
+    "Go/Let's Go! (book).md",
+    "temp.md",
+    "Spring/Hibernate.md",
+    "IT Sec/Information Security Foundation - HTB.md",
+    "IT Sec",
+    "Misc tips/BG white colour.md",
+    "Misc tips",
+    "Spring/Start project.md",
+    "Go/Slices.md",
+    "Go/Loops.md",
+    "Spring/DTO & Service.md",
+    "Spring/Forgotten password.md",
+    "Spring/Logging.md",
+    "Spring/Lombok.md",
+    "Spring/REST.md",
+    "Spring/Validation.md",
+    "Spring/Troubleshooting tips.md",
+    "Spring/Testing.md",
+    "Go/Structs.md",
+    "Go/fmt.md",
+    "attachments/applicationpropertieshibernate.png",
+    "Untitled.canvas",
+    "Misc code",
+    "Go",
+    "attachments/springmainmethod.png",
+    "attachments/example@restcontroller.png",
+    "attachments/controllerannotation.png",
+    "attachments/gradledependencies.png",
+    "attachments/springdependencies.png",
+    "attachments/springbootstart.png",
+    "attachments/Pasted image 20240409125312.png",
+    "attachments",
+    "Spring",
+    "Python",
+    "SQL"
+  ]
+}

@@ -1,0 +1,1 @@
+"Take your primary branding color, convert it to HSL then shift the lightness up to the 90-99% range until it's bright enough."
