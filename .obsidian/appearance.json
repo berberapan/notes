@@ -1,7 +1,8 @@
 {
   "accentColor": "",
-  "cssTheme": "Typewriter",
+  "cssTheme": "Catppuccin",
   "theme": "obsidian",
   "baseFontSizeAction": false,
-  "baseFontSize": 14
+  "baseFontSize": 14,
+  "textFontFamily": "VictorMono Nerd Font"
 }

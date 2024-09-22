@@ -25,7 +25,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "IT Sec/Linux.md",
+                "file": "Spring/Start project.md",
                 "mode": "source",
                 "source": false
               }
@@ -78,8 +78,7 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -99,7 +98,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "IT Sec/Linux.md",
+                "file": "Spring/Start project.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -116,7 +115,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "IT Sec/Linux.md",
+                "file": "Spring/Start project.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -139,7 +138,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "IT Sec/Linux.md"
+                "file": "Spring/Start project.md"
               }
             }
           }
@@ -160,12 +159,13 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "aa71288a87ec0fbd",
+  "active": "0d423d121870787e",
   "lastOpenFiles": [
+    "IT Sec/Information Security Foundation - HTB.md",
+    "Misc code/Postgres Docker.md",
     "attachments/Pasted image 20240913162550.png",
     "Go/Let's Go Further! (book).md",
     "IT Sec/Linux.md",
-    "Misc code/Postgres Docker.md",
     "Misc code/Fzf.md",
     "Misc code/Start React project with Vite.md",
     "Spring/Controller.md",
@@ -173,7 +173,6 @@
     "Go/Let's Go! (book).md",
     "temp.md",
     "Spring/Hibernate.md",
-    "IT Sec/Information Security Foundation - HTB.md",
     "IT Sec",
     "Misc tips/BG white colour.md",
     "Misc tips",
