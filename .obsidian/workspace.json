@@ -13,13 +13,26 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Python/Basics.md",
+                "file": "Go/Let's Go Further! (book).md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "bd36fde47a0aad35",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Git/Git basics.md",
                 "mode": "source",
                 "source": false
               }
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -86,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Python/Basics.md",
+                "file": "Git/Git basics.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +116,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Python/Basics.md",
+                "file": "Git/Git basics.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,7 +139,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Python/Basics.md"
+                "file": "Git/Git basics.md"
               }
             }
           }
@@ -147,15 +160,19 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "6428f5bdae67cd01",
+  "active": "bd36fde47a0aad35",
   "lastOpenFiles": [
+    "Go/Let's Go Further! (book).md",
+    "Git/Git basics.md",
+    "Git",
+    "Terminal & Shells/Terminals & Shells.md",
+    "Terminal & Shells",
     "Python/Basics.md",
     "Python",
     "Misc code/Postgres Docker.md",
     "Spring/Start project.md",
     "IT Sec/Information Security Foundation - HTB.md",
     "attachments/Pasted image 20240913162550.png",
-    "Go/Let's Go Further! (book).md",
     "IT Sec/Linux.md",
     "Misc code/Fzf.md",
     "Misc code/Start React project with Vite.md",
@@ -177,8 +194,6 @@
     "Spring/Validation.md",
     "Spring/Troubleshooting tips.md",
     "Spring/Testing.md",
-    "Go/Structs.md",
-    "Go/fmt.md",
     "attachments/applicationpropertieshibernate.png",
     "Untitled.canvas",
     "Misc code",
@@ -192,7 +207,6 @@
     "attachments/Pasted image 20240409125312.png",
     "attachments",
     "Spring",
-    "Python",
-    "SQL"
+    "Python"
   ]
 }
