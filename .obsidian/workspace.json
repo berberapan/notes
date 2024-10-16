@@ -25,7 +25,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Git/Git basics.md",
+                "file": "Python/Basics.md",
                 "mode": "source",
                 "source": false
               }
@@ -99,7 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Git/Git basics.md",
+                "file": "Python/Basics.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -116,7 +116,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Git/Git basics.md",
+                "file": "Python/Basics.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -139,7 +139,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Git/Git basics.md"
+                "file": "Python/Basics.md"
               }
             }
           }
@@ -162,8 +162,11 @@
   },
   "active": "bd36fde47a0aad35",
   "lastOpenFiles": [
-    "Go/Let's Go Further! (book).md",
     "Git/Git basics.md",
+    "IT Sec/Linux.md",
+    "IT Sec/Information Security Foundation - HTB.md",
+    "Spring/Annotations.md",
+    "Go/Let's Go Further! (book).md",
     "Git",
     "Terminal & Shells/Terminals & Shells.md",
     "Terminal & Shells",
@@ -171,13 +174,10 @@
     "Python",
     "Misc code/Postgres Docker.md",
     "Spring/Start project.md",
-    "IT Sec/Information Security Foundation - HTB.md",
     "attachments/Pasted image 20240913162550.png",
-    "IT Sec/Linux.md",
     "Misc code/Fzf.md",
     "Misc code/Start React project with Vite.md",
     "Spring/Controller.md",
-    "Spring/Annotations.md",
     "Go/Let's Go! (book).md",
     "temp.md",
     "Spring/Hibernate.md",

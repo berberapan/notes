@@ -81,6 +81,50 @@ When rebasing a branch the following happens:
 Advantage of merge is that it preserve the true history of a project but the history is also harder to read due to all merge commits.
 
 Avoid rebasing a public branch onto anything else. Other devs can have it checked out and changed history may cause problems.
+
+#### Reset
+
+The git reset command can be used to undo changes.
+A soft reset is useful if you want to go back to a previous commit but keep all of your changes. Committed changes will be made uncommitted and staged instead and those that were staged will stay staged.
+
+`git reset --soft {hash}`
+
+If you don't want to keep the changes you can do a hard reset. If you use hard all the changes will be gone and you'll be back at the commit you referenced in the hash.
+
+`git reset --hard {hash}`
+
+When you use this command you need to be aware you can't recover anything that's gone it's undoing the commits.
+
+#### Remote
+
+When using git another repo is called a remote. Standard convention is that if the remote is the main place for the code you should name it **origin**,
+
+`git remote add {name} {uri}`
+
+To get the contents of the remote you can use the fetch command. If you don't have the contents and you run the command you will download the objects in the .git directory.It's metadata so if you run something like git log on a repo that you only fetched it will give you an error message.
+
+`git fetch`
+
+To get the commits, just like the local branch you need to merge. If you don't have anything on the branch it will just be a fast-forward merge.
+
+`git merge {remote}/{branch}`
+
+To get your code to the remote you use the push command.
+
+`git push origin main`
+
+You can also push a local branch to a remote branch with another name.
+
+`git push origin {local branch}:{remote branch}`
+
+To delete a remote branch you can push an empty branch to it.
+
+`git push origin :{remote branch}`
+
+To get the actual file changes from a remote you use the command pull. If you run a pull without specify anything it will pull the current branch from your current branch from the remote.
+
+`git pull {remote} {branch}`
+
 #### Misc
 
 Renaming a branch
@@ -103,4 +147,7 @@ Delete branch
 
 Base new branch on old commit
 `git switch -c {branch name} {hash for commit}`
+
+Rebase on pull instead of merge
+`git config --global pull.rebase true`
 
