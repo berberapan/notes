@@ -74,3 +74,26 @@ When you're decoding JSON it usually better to work with the json.Decoder over j
 
 When decoding you have to pass a non-nil pointer otherwise you'll get an error at runtime. If the target is a struct the fields must be exported just like when you encode. Any JSON key/value pairs that can't be mapped will be silently ignored.
 
+If you are making a public facing API consider using your own errors as errors returned by decode might be too specific and show underlying structures or it could return with not enough info. The book uses a helper function to triage potential errors.
+
+It can be a good idea to limit what a user can send in the api calls. Setting up you api you have to think about what the maximum size of a request body should be for example. If you leave it unlimited you're very vulnerable to denial-of-service attacks. Max size for the request body is set with `http.MaxBytesReader()`
+
+Just like in the previous book the author recommends to use a validator package in the internals to handle validations of inputs.
+
+##### Chapter 5 - Database Setup and Configuration
+
+The book is using postgresql for its database. Creating a databse is the same as in most SQL based databases. 
+`CREATE DATABASE {name};` 
+and to connect to it you use the `\c` command. The backslash is used for commands in postgres. Below are a few of the many commands.
+
+```
+\c - connect to database
+\l - list all databases
+\dt - list tables
+\du - list users
+\? - full list of available commands
+```
+
+Postgres also got extensions you can add to add additional features. Some ship with postgres [found here](https://www.postgresql.org/docs/current/contrib.html) and other you need to download [found here](https://www.postgresql.org/download/products/6-postgresql-extensions/)
+
+According to the author the default settings are quite conservative so there's often a lot of room to improve the performance of the database by tweaking values in the `postgresql.conf` file. You can read more about the settings [here](https://www.enterprisedb.com/postgres-tutorials/how-tune-postgresql-memory)
