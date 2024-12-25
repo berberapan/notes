@@ -299,3 +299,125 @@ print(sum(1)(2))
 ```
 
 It looks and is a bit more complicated than the example above but it's used often to change a function's signature to make it conform to a shape.
+
+#### Decorators
+
+Python decorators are syntatic-sugar for higher-order functions. They're not anything more.
+
+These code examples are doing identical things. Vowel_counter is another function that takes a function as an argument.
+
+**With decorator**
+```python
+@vowel_counter
+def process_doc(doc):
+    print(f"Document: {doc}")
+
+process_doc("Something wicked this way comes")
+```
+
+**Without decorator**
+```python
+def process(doc):
+    print(f"Document: {doc}")
+
+process_doc = vowel_counter(process)
+process_doc("Something wicked this way comes")
+```
+
+**Args and kwargs**
+
+Using args and kwargs in a function allows the function to accept and deal with a variable number of arguments.
+
+- \*args collects positional arguments into a tuple
+- \*\*kwargs collects keyword (named) arguments into a dictionary.
+
+Position doesn't matter for kwargs as they're passed by name.
+
+```python
+def sub(a, b):
+    return a - b
+
+res = sub(b=3, a=2)
+# res = -1
+res = sub(a=3, b=2)
+# res = 1
+```
+
+Any positional arguments must come before keyword arguments.
+
+#### Sum Types
+
+Python doesn't really support sum types but you can use workarounds. In the example below the isinstance is used to check if an instance is an instance of another subclass.
+
+```python
+def respond_to_text(guy_at_bar):
+    if isinstance(guy_at_bar, Dateable):
+        return f"Hey {guy_at_bar.name}, I'd love to go out with you!"
+    elif isinstance(guy_at_bar, MaybeDateable):
+        return f"Hey {guy_at_bar.name}, I'm busy but let's hang out sometime later."
+    elif isinstance(guy_at_bar, Undateable):
+        return "Have you tried being rich?"
+    else:
+        raise ValueError("invalid Person type")
+```
+
+This is instead of checking every possible combination. The sum type is the opposite to a product type.
+
+Product types, the total number of possible number of combinations of values is the product of the number of its fields.
+
+Sum types, got a known number of possibilities. Booleans are an example of a sum type. While a list is a product type as the number of items in a list isn't known.
+
+Another sum type is an enum. Python supports it but it's checked at runtime. Most languages makes the check at compile. As no enforcement of the types happens you should handle the possibility of something else getting added to.
+
+**Enum**
+```python
+from enum import Enum
+
+Color = Enum('Color', ['RED', 'GREEN', 'BLUE'])
+print(Color.RED)  # this works, prints 'Color.RED'
+print(Color.TEAL) # this raises an exception
+```
+
+In functional programming you rather represent errors as data rather than exceptions as exceptions are side effects.
+
+**Match**
+
+Match is like Python's version of switch case.
+
+```python
+def get_hex(color):
+    match color:
+        case Color.RED:
+            return "#FF0000"
+        case Color.GREEN:
+            return "#00FF00"
+        case Color.BLUE:
+            return "#0000FF"
+        # default case
+        # (invalid Color)
+        case _:
+            return "#FFFFFF"
+```
+
+To match two values you can use a tuple.
+
+```python
+def get_hex(color, shade):
+    match (color, shade):
+        case (Color.RED, Shade.LIGHT):
+            return "#FFAAAA"
+        case (Color.RED, Shade.DARK):
+            return "#AA0000"
+        case (Color.GREEN, Shade.LIGHT):
+            return "#AAFFAA"
+        case (Color.GREEN, Shade.DARK):
+            return "#00AA00"
+        case (Color.BLUE, Shade.LIGHT):
+            return "#AAAAFF"
+        case (Color.BLUE, Shade.DARK):
+            return "#0000AA"
+        # default case
+        # (invalid combination)
+        case _:
+            return "#FFFFFF"
+```

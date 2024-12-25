@@ -8,35 +8,20 @@
         "type": "tabs",
         "children": [
           {
-            "id": "823919d524aa4a6a",
+            "id": "9d955dd071fb8ca6",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Python/Basics.md",
+                "file": "Python/Algorithms.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Basics"
-            }
-          },
-          {
-            "id": "0c71fbb6c6d41677",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Python/Functional Programming.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Functional Programming"
+              "title": "Algorithms"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -92,8 +77,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 244.5,
-    "collapsed": true
+    "width": 244.5
   },
   "right": {
     "id": "05e39475f12815ec",
@@ -178,12 +162,17 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "0c71fbb6c6d41677",
+  "active": "9d955dd071fb8ca6",
   "lastOpenFiles": [
-    "Python/Basics.md",
-    "Python/Functional Programming.md",
     "Python/OOP.md",
+    "Python/Algorithms.md",
+    "Python/Basics.md",
+    "attachments/bigo.png",
+    "Python/Functional Programming.md",
     "Python/Misc.md",
+    "Spring/Hibernate.md",
+    "Spring/Annotations.md",
+    "Misc code/Postgres Docker.md",
     "Book notes/Dungeon Crawler Carl series.md",
     "Book notes",
     "Go/Let's Go Further! (book).md",
@@ -192,12 +181,10 @@
     "Git/Git basics.md",
     "IT Sec/Linux.md",
     "IT Sec/Information Security Foundation - HTB.md",
-    "Spring/Annotations.md",
     "Git",
     "Terminal & Shells/Terminals & Shells.md",
     "Terminal & Shells",
     "Python",
-    "Misc code/Postgres Docker.md",
     "Spring/Start project.md",
     "attachments/Pasted image 20240913162550.png",
     "Misc code/Fzf.md",
@@ -205,15 +192,12 @@
     "Spring/Controller.md",
     "Go/Let's Go! (book).md",
     "temp.md",
-    "Spring/Hibernate.md",
     "IT Sec",
     "Misc tips/BG white colour.md",
     "Misc tips",
     "Go/Slices.md",
     "Go/Loops.md",
     "Spring/DTO & Service.md",
-    "Spring/Forgotten password.md",
-    "Spring/Logging.md",
     "attachments/applicationpropertieshibernate.png",
     "Untitled.canvas",
     "Misc code",
