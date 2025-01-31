@@ -120,3 +120,19 @@ matrix := [][]int{}
 [0 8 16 24 32 40 48 56 64 72]
 [0 9 18 27 36 45 54 63 72 81]
 ```
+
+#### Modify values
+
+If you want to change the value on the original slice in a loop for example, use the index. Otherwise if you use the value it will just be a copy.
+
+```go
+// Using index - modifies original
+for i := range messages {
+    messages[i].field = newValue // Changes actual element
+}
+
+// Using value - works with copy
+for _, msg := range messages {
+    msg.field = newValue // Changes only the copy
+}
+```
