@@ -97,3 +97,25 @@ and to connect to it you use the `\c` command. The backslash is used for command
 Postgres also got extensions you can add to add additional features. Some ship with postgres [found here](https://www.postgresql.org/docs/current/contrib.html) and other you need to download [found here](https://www.postgresql.org/download/products/6-postgresql-extensions/)
 
 According to the author the default settings are quite conservative so there's often a lot of room to improve the performance of the database by tweaking values in the `postgresql.conf` file. You can read more about the settings [here](https://www.enterprisedb.com/postgres-tutorials/how-tune-postgresql-memory)
+
+Just like in the previous book a database driver is used and then a function to establish connection with the database and ping with a context timeout of 5 seconds.
+
+```go
+func openDB(cfg config) (*sql.DB, error) {
+	db, err := sql.Open("postgres", cfg.db.dsn)
+	if err != nil {
+		return nil, err
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	err = db.PingContext(ctx)
+	if err != nil {
+		db.Close()
+		return nil, err
+	}
+	return db, nil
+}
+```
+
+The db connection pool contains two types of connections, idle and in-use ones. Connections gets marked as in-use when they are performing a task, e.g. sending a query. When a task is completed it goes back to idle status.
+
