@@ -82,7 +82,7 @@ Just like in the previous book the author recommends to use a validator package 
 
 ##### Chapter 5 - Database Setup and Configuration
 
-The book is using postgresql for its database. Creating a databse is the same as in most SQL based databases. 
+The book is using postgresql for its database. Creating a database is the same as in most SQL based databases. 
 `CREATE DATABASE {name};` 
 and to connect to it you use the `\c` command. The backslash is used for commands in postgres. Below are a few of the many commands.
 
@@ -118,4 +118,136 @@ func openDB(cfg config) (*sql.DB, error) {
 ```
 
 The db connection pool contains two types of connections, idle and in-use ones. Connections gets marked as in-use when they are performing a task, e.g. sending a query. When a task is completed it goes back to idle status.
+
+The connection pool got four methods that you can configure.
+
+- SetMaxOpenConns(), allows you set an upper limit for open connections. Default value for it is unlimited. An open connection counts as all idle ones plus the in-use ones. The higher the value the more queries can be performed concurrently and lower risk of the pool becoming a bottleneck for the application. By default postgres got a hard limit of 100 open connections (it can be changed in postgresql.conf). To avoid HTTP requests to hang if no connection is available it's important to set a timeout with context.
+- SetMaxIdleConns(), upper limit on number of idle connections. The default value is 2. Allowing idle connections improve performance because it's less likely that a new connection needs to be established. But keeping idle connections takes up memory and if a connection idles too long it may become unusable. Only keep connections idle if they're likely to get used again. Max idle connections should always be less or equal to max open connections.
+- SetConnMaxLifetime(), limit for the time that a connection can be reused. Default value is no limit and connections will be reused forever. Once every second Go runs a cleanup op that removes expired connections from the pool. 
+- SetConnMaxIdleTime(), limit for how long a connection can be idle before getting marked as expired.
+
+In general higher open conns and max idle conns values lead to better performance but returns will be diminishing, so avoid having too large of a idle connection pool as it could lead to reduced performance. Therefore always set a ConnMaxIdleTime.
+
+##### Chapter 6 - SQL Migrations
+
+The concept of SQL migrations works like this:
+
+For every change that you make to your database schema you create a pair of migration files. One file is the 'up' one which contains the SQL statements to implement the change, and the other is the 'down' one which contains the SQL statements to roll back the change.
+
+The pair of migration files are usually numbered sequentially or with a Unix timestamp to indicate in which order they should be applied.
+
+A tool or script is usually used to apply changes or rollbacks so only the necessary SQL statements are executed.
+
+Benefits of using migrations is that the database schema is described by the SQL migration files and because they are just regular files they can be tracked along with the rest of the code in version control. It's also easy to replicate current database on other machines. And of course the possibility to roll back changes.
+
+The book uses golang-migrate as a tool for migration.
+`migrate create -seq -ext=.sql -dir=./migrations create_movies_table`
+- -seg flag gives the files numbering instead of default unix timestamps
+- -ext flag indicates that the files should have .sql extension
+- -dir flag indicates where to store the files
+- lastly is the name of the file.
+Two files will be created, one up and one down.
+
+Bigserial is used for type for primary key and Go's equivalent is int64.
+
+Null values can be a bit awkward to work with in Go so try to set NOT NULL restrictions when possible in your database.
+
+The datatype to use for strings in Postgres should preferably be text over varchar and varchar(x). [Blog comparing them](https://www.depesz.com/2010/03/02/charx-vs-varcharx-vs-varchar-vs-text/)
+
+To execute the migration files against the database
+`migrate -path=./migrations -database=$GREENLIGHT_DB_DSN up`
+
+you can use down to roll back everything.
+
+To check which version your db is running
+`migrate -path=./migrations -database=$GREENLIGHT_DB_DSN version`
+
+If you want to migrate to a specific version you type out the version.
+`migrate -path=./migrations -database=$GREENLIGHT_DB_DSN goto 1`
+
+If you make a syntax error in the SQL migration file it can be a bit confusing to fix. The migration tool will work up to the syntax error which means that a half of the statements can have been applied. The dirty field in schema_migrations table will be set to true. If this happens you can't just use a down migration but rather have to investigate where the error happened and what partial was applied and manually roll back those. Then you must force the version number in schema_migrations to the correct value.
+
+`migrate -path=./migrations -database=$EXAMPLE_DSN force 1`
+
+After the force the database is considered clean again.
+
+You can also use migration files from remote sources
+Here are a few examples
+
+```bash
+migrate -source="s3://<bucket>/<path>" -database=$EXAMPLE_DSN up
+migrate -source="github://owner/repo/path#ref" -database=$EXAMPLE_DSN up
+migrate -source="github://user:personal-access-token@owner/repo/path#ref" -database=$EXAMPLE_DSN up
+```
+
+##### Chapter 7 - CRUD Operations
+
+**Create** 
+Inserting into a postgres database you use $N notations to represent the placeholder parameters. It's important to use these for untrusted data to avoid SQL injection attacks. 
+
+If you want to make more than one statement in the same call pq supports that but you can't use the $N notations. If you need those you have to make separate calls in some way.
+
+```go
+INSERT INTO movies (title, year, runtime, genres) 
+VALUES ($1, $2, $3, $4)
+RETURNING id, created_at, version
+```
+
+Returning is a postgres clause that is not part of SQL standard that makes it so you can use the return values from any record that is being manipulated. Remember to use QueryRow() if using returning as it will return a row of data.
+
+If you want to store a slice of strings or ints for example, like is done with genres in the book example, you have to pass it through pq.Array() before executing the query.
+
+```go
+func (m MovieModel) Insert(movie *Movie) error {
+    query := `
+        INSERT INTO movies (title, year, runtime, genres)        VALUES ($1, $2, $3, $4)        RETURNING id, created_at, version`
+
+    args := []any{movie.Title, movie.Year, movie.Runtime, pq.Array(movie.Genres)}
+
+    return m.DB.QueryRow(query, args...).Scan(&movie.ID, &movie.CreatedAt, &movie.Version)
+}
+```
+
+**Read**
+If you're using an auto-incrementing id it should never be a value below 1 by default so to avoid unnecessary calls to the database you can set an if check for your get method to see that the value isn't below 1. 
+
+So why not just use a uint instead of int64 as the ID in the Go code? The answer is that is best practice to try to align the Go code types with postgres' to avoid overflows or other compatibility issues. Postgres doesn't have uint.
+
+| PostgreSQL type           | Go type                                               |
+| ------------------------- | ----------------------------------------------------- |
+| `smallint`, `smallserial` | `int16` (-32768 to 32767)                             |
+| `integer`, `serial`       | `int32` (-2147483648 to 2147483647)                   |
+| `bigint`, `bigserial`     | `int64` (-9223372036854775808 to 9223372036854775807) |
+Another reason is that the database/sql package doesn't support integer values greater than the biggest int64 number and biggest uint64 would be bigger than that and generate runtime errors if it was used.
+
+**Update**
+When updating you can use the helpers you already using from the create and read. Update the values, preferably by taking a pointer and mutate it in-place.
+
+All in all the method will be very similar to a create one, especially if the functionality is such as that you need to give all the parameters.
+
+**Delete**
+Just like when reading we need to check if the record exists and we can do the 1 check again to avoid unnecessary calls.
+
+As we're not looking for any query return for the delete we should use the Exec(). Exec actually return a sql.Result object which contains info on how many rows the query affected. If the rows affected is 1, the delete has been succesful but if it's 0 it means the value didn't exist. Use that to give info to the user, a zero can result in a 404 for example.
+
+For the status code to send back with a successful request the author recommends 200 if the users are mainly humans, with a message of "successfully deleted" or similar. If on the other hand it's mainly machines you can go with a 204 - No content and an empty response body.
+
+##### Chapter 8 - Advanced CRUD Operations
+
+Last chapter the update required all fields to update the value but it's more user friendly to allow partial updates if not all values are getting changed. If not all values are given how are we supposed to tell if the value has a zero-value or it's not just provided. 
+
+To solve this we can use pointers for the input. A pointer's zero value is nil. So instead of figuring out if a zero for an int is the intent from the user or a zero-value we can make the value a pointer. When grabbing the values and assigning them to the struct we're working with we can do a simple if check to see that they're not nil and assign them. When parsing the request only new values that are not nil will go through.
+
+Partial updates should technically be of the PATCH value.
+
+Unless you write your own JSON parser you will have one type of request that won't work as intended. If the user adds null as a value the parser will go through without changing the values. Author says in most cases it suffice to explain the behaviour in the documentation.
+
+You have to account for race conditions. Using http.Server each http request gets handled in their own goroutine. So if two update requests happens at the exact same time it can create issues.
+The author chooses an optimistic locking as a solution by using the version number in the record. So the WHERE clause gets updated so it only find something if version number matches.
+
+Status code should be 409 - Conflict with the error generated.
+
+As mentioned before, use context to timeout things. For CRUD operations you should add a context to timeout queries if they haven't been completed within a certain time.
+
+##### Chapter 9 - Filtering, Sorting, and Pagination
 
