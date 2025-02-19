@@ -251,3 +251,113 @@ As mentioned before, use context to timeout things. For CRUD operations you shou
 
 ##### Chapter 9 - Filtering, Sorting, and Pagination
 
+When using the api you want to be able to set parameters for how the output will be by setting query sting parameters.
+`/v1/movies?title=godfather&genres=crime,drama&page=1&page_size=5&sort=-year` example from the book.
+
+Create helper functions to read the query string for the different values. Parameters not specific to the section can be its own Filter struct. 
+
+Example of a helper function to read string value from query string.
+
+```go
+func (app *application) readString(qs url.Values, key string, defaultValue string) string {
+    s := qs.Get(key)
+    if s == "" {
+        return defaultValue
+    }
+    return s
+}
+```
+
+Validation is important to set as well to have some sanity checks for the values the user put in.
+
+To set optional values with title and genres in this case the book uses this query
+
+```sql
+SELECT id, created_at, title, year, runtime, genres, version
+FROM movies
+WHERE (LOWER(title) = LOWER($1) OR $1 = '') 
+AND (genres @> $2 OR $2 = '{}') 
+ORDER BY id
+```
+
+@> is the contains operator for postgres, it returns true if each value in the placeholder appears in the database.
+
+The problem with the above sql is that the search in title needs to match the exact title. There are different ways around this. The author recommends using to_tsvector that splits the string into lexemes. `The Breakfast Club` -> `'breakfast' 'club' 'the'`
+
+```sql
+SELECT id, created_at, title, year, runtime, genres, version
+FROM movies
+WHERE (to_tsvector('simple', title) @@ plainto_tsquery('simple', $1) OR $1 = '') 
+AND (genres @> $2 OR $2 = '{}')     
+ORDER BY id
+```
+
+@@ is a matches operator. plainto_tsquery() takes the search value and turns into a formatted query, it strips special characters and inserts & between the words. So with the @@ operator to_tsvector and plainto_tsquery have to match all the words. 
+
+You might want to run the lexemexes in another language you can add it in the query.
+`WHERE (to_tsvector('english', title) @@ plainto_tsquery('english', $1) OR $1 = '')`
+
+The pagination can be done with limit and offset in the query.
+
+LIMIT = page_size
+OFFSET = (page - 1) * page_size
+
+##### Chapter 10 - Rate Limiting
+
+The book uses a package x/time/rate to help with the rate limiting. It uses a token bucket rate limiter.
+
+> A Limiter controls how frequently events are allowed to happen. It implements a “token bucket” of size `b`, initially full and refilled at rate `r` tokens per second.
+
+The bucket starts with b tokens in it, and every request will remove one token from the bucket. Every second the bucket gets refilled with r tokens up to the size of b. If the bucket gets empty the api should return a 429 - Too many requests.
+
+You build a middleware that takes the NewLimiter to make a global limiter like below.
+
+```go
+func (app *application) rateLimit(next http.Handler) http.Handler {
+    limiter := rate.NewLimiter(2, 4)
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        if !limiter.Allow() {
+            app.rateLimitExceededResponse(w, r)
+            return
+        }
+        next.ServeHTTP(w, r)
+    })
+}
+```
+
+Normally though you set a rate limiter on the ip address rather than a global one. A straight forward way of doing that is to create a map of rate limiters using the ip as key. Maps are not safe for concurrent use so you will have to use a mutex in that case as every http request will be its own goroutine.
+
+The middleware might look something like this instead then.
+
+```go
+func (app *application) rateLimit(next http.Handler) http.Handler {
+    var (
+        mu      sync.Mutex
+        clients = make(map[string]*rate.Limiter)
+    )
+
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        ip, _, err := net.SplitHostPort(r.RemoteAddr)
+        if err != nil {
+            app.serverErrorResponse(w, r, err)
+            return
+        }
+        mu.Lock()
+        if _, found := clients[ip]; !found {
+            clients[ip] = rate.NewLimiter(2, 4)
+        }
+        if !clients[ip].Allow() {
+            mu.Unlock()
+            app.rateLimitExceededResponse(w, r)
+            return
+        }
+        mu.Unlock()
+        next.ServeHTTP(w, r)
+    })
+}
+```
+
+You may also want to add some kind of clearing of the limiter to avoid the map taking up too much resources. 
+
+##### Chapter 11 - Graceful Shutdown
+
